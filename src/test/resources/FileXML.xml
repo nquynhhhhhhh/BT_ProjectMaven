@@ -5,7 +5,7 @@
         <classes>
             <class name="BT1.AddCategory">
                 <methods>
-                    <include name="menuDashboard"/>
+                    <include name="categoryPage"/>
                 </methods>
             </class>
         </classes>
