@@ -3,7 +3,7 @@
 <suite name="SuiteRunByClass" verbose="1">
     <test name="FirstTest">
         <classes>
-            <class name="BT1.AddCategory">
+            <class name="BT1_3.AddCategory">
                 <methods>
                     <include name="categoryPage"/>
                 </methods>
