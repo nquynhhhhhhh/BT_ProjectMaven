@@ -2,18 +2,25 @@ package BT1_3;
 
 import Common.BaseTest;
 import Common.Locators;
+import Wait.WebUI;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import java.time.Duration;
 import java.util.List;
+
+import static Common.Locators.itemBook;
 
 public class AddCategory extends BaseTest {
 
-    @Test
+    @Test(priority = 1)
     public void dashboardPage() throws InterruptedException {
         SoftAssert softAssert = new SoftAssert();
         Assert.assertEquals(driver.findElement(By.xpath(Locators.tabDashboard)).getText(), "Dashboard", "Tab title does not match");
@@ -28,7 +35,7 @@ public class AddCategory extends BaseTest {
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(priority = 2)
     public void categoryPage() throws InterruptedException {
         SoftAssert softAssert = new SoftAssert();
         driver.findElement(By.xpath(Locators.inputSearchMenuDashboard)).sendKeys("Category");
@@ -105,7 +112,7 @@ public class AddCategory extends BaseTest {
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(priority = 3)
     public void itemMyBear2() throws InterruptedException {
         SoftAssert softAssert = new SoftAssert();
         driver.findElement(By.xpath(Locators.menuProducts)).click();
@@ -175,7 +182,7 @@ public class AddCategory extends BaseTest {
 
     }
 
-    @Test
+    @Test(priority = 4)
     public void editMyBear2() throws InterruptedException {
         SoftAssert softAssert = new SoftAssert();
         driver.findElement(By.xpath(Locators.menuProducts)).click();
@@ -258,8 +265,9 @@ public class AddCategory extends BaseTest {
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(priority = 5)
     public void deleteItem() throws InterruptedException {
+        new WebUI(driver);
         SoftAssert softAssert = new SoftAssert();
         driver.findElement(By.xpath(Locators.inputSearchMenuDashboard)).sendKeys("Category");
         driver.findElement(By.xpath(Locators.menuCategory)).click();
@@ -269,14 +277,43 @@ public class AddCategory extends BaseTest {
         driver.findElement(By.xpath(Locators.inputSearchCategory)).submit();
         Thread.sleep(1000); //submit gây ra việc reload lại trang => cần thêm time để load
 
-        Assert.assertEquals(driver.findElement(By.xpath(Locators.itemBook)).getText(), "Book", "Name does not match");
+        Assert.assertEquals(driver.findElement(By.xpath(itemBook)).getText(), "Book", "Name does not match");
         driver.findElement(By.xpath(Locators.buttonDeleteBook)).click();
         Thread.sleep(1000);
-//        driver.findElement(By.xpath(Locators.buttonDeleteDialog)).click();
+        driver.findElement(By.xpath(Locators.buttonDeleteDialog)).click();
+        Thread.sleep(1000);
+        softAssert.assertEquals(driver.findElement(By.xpath(Locators.dialogDeleteSuccess)).getText(), "Category has been deleted successfully", "Dialog Delete Success does not match");
+        driver.findElement(By.xpath(Locators.inputSearchCategory)).sendKeys("Book");
+        driver.findElement(By.xpath(Locators.inputSearchCategory)).submit();
+        //Check còn itemBook không
+        Assert.assertTrue(WebUI.waitForElementNotPresent(By.xpath(itemBook), 5),"Item still exists");
 
+        //ADD LẠI ĐỂ KH ẢNH HƯỞNG TEST deleteItem
+        driver.findElement(By.xpath(Locators.buttonAddNewCategory)).click();
+        Thread.sleep(1000);
+        driver.findElement(By.xpath(Locators.inputNameBook)).sendKeys("Book");
+        WebElement saveBook = driver.findElement(By.xpath(Locators.buttonSave));
+        //driver hiện đang có kiểu là WebDriver + WebDriver không có hàm chạy JavaScript
+        //=> Ép kiểu driver sang JavascriptExecutor = cách gán vào biến js
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        // .executeScript = Thực thi một đoạn JavaScript
+        //arguments[0] = saveBook (kh dùng thẳng saveBook là do JavaScript kh hiểu)
+        js.executeScript("arguments[0].scrollIntoView(false);", saveBook);
+        Thread.sleep(1000);
+        saveBook.click();
+        Thread.sleep(1000);
+
+        softAssert.assertAll();
     }
 
+
 }
+
+
+
+
+
+
 
 
 

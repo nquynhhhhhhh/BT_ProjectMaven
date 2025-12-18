@@ -51,8 +51,9 @@ public class Locators {
     public static String textDialog= "//p[normalize-space()='Are you sure to delete this?']";
 
     public static String itemBook = "//td[normalize-space()='Book']";
-    public static String buttonDeleteBook= "//td[normalize-space()='Book' and @class='d-flex align-items-center']/following-sibling::td[9]/a[@title='Delete']";
-
+    public static String buttonDeleteBook = "//td[normalize-space()='Book' and @class='d-flex align-items-center']/following-sibling::td[9]/a[@title='Delete']";
+    public static String dialogDeleteSuccess = "//span[@data-notify='message' and contains(normalize-space(), 'Category has been deleted successfully')]";
+    public static String dialogAddSuccess = "";
 
     //Edit Category
     public static String headerEditPage = "//h5[normalize-space()='Category Information']";
@@ -69,8 +70,8 @@ public class Locators {
 
 
     //Add New Category
-//    public static String headerAddNewCategory = "//h5[normalize-space()='Category Information']";
-//    public static String inputName = "//input[@id='name']";
+    public static String headerAddNewCategory = "//h5[normalize-space()='Category Information']";
+    public static String inputNameBook = "//input[@id='name']";
 //    public static String buttonType = "//button[@title='Physical']";
 //    public static String buttonParentCategory = "//div[contains(text(),'No Parent')]";
 //    public static String inputOrderingNumber = "//input[@id='order_level']";
